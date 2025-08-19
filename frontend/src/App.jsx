@@ -7,27 +7,27 @@ const App = () => {
     const [requests, setRequests] = useState([]);
 
     const addRequest = async (request) => {
-        try {
-            const response = await fetch('http://localhost:5000/submit-pass-request', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(request),
-            });
+       try {
+    const response = await fetch('http://localhost:5000/api/submit-pass-request', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request),
+    });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
 
-            const data = await response.text();
-            alert(data); // Show success message
-            setRequests([...requests, request]); // Update local state
-        } catch (error) {
-            console.error('Error submitting request:', error);
-            alert('Failed to submit request');
-        }
-    };
+    const data = await response.json(); // backend sends JSON
+    alert(data.message);
+    setRequests([...requests, request]);
+} catch (error) {
+    console.error('Error submitting request:', error);
+    alert('Failed to submit request');
+}
+    }
 
     return (
         <div className="app">
